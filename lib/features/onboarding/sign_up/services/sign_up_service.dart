@@ -41,11 +41,13 @@ class SignUpService {
           'providedOTP': otp,
         },
       );
-      final parsedResponse = VerifyOTPResponseModel.fromMap(response.data);
-      if (parsedResponse.success) {
+      if (response.data['success']) {
+        final parsedResponse = VerifyOTPResponseModel.fromMap(response.data);
+
         return right(parsedResponse);
+      } else {
+        return left(response.data['message']);
       }
-      return left(parsedResponse.error.toString());
     } catch (e) {
       return left(e.toString());
     }

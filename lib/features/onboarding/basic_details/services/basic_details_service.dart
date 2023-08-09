@@ -8,20 +8,16 @@ class BasicDetailsService {
   final _dioClient = DioClient.instance;
 
   Future<Either<String, UserInfoModel>> storeBasicDetails(
-      UserInfoModel userInfo) async {
+      Result userInfo) async {
     try {
       final response = await _dioClient.post(
         ApiEndpoint.postUserInfo,
         body: userInfo.toJson(),
       );
 
-      if (response.data['success']) {
-        final updatedUserInfo = UserInfoModel.fromJson(response.data);
+      final updatedUserInfo = UserInfoModel.fromJson(response.data);
 
-        return right(updatedUserInfo);
-      } else {
-        return left(response.data['message']);
-      }
+      return right(updatedUserInfo);
     } catch (e) {
       debugPrint(e.toString());
       return left(e.toString());

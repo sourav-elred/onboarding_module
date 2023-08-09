@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
+        initialRoute: RouteConstansts.basicDetails,
         routes: {
           RouteConstansts.initialRoute: (context) =>
               const SignUpWithPhoneScreen(),

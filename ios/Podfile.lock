@@ -1,5 +1,8 @@
 PODS:
   - Flutter (1.0.0)
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
   - libphonenumber_plugin (0.0.1):
     - Flutter
     - PhoneNumberKit
@@ -14,9 +17,11 @@ PODS:
     - FlutterMacOS
   - smart_auth (0.0.1):
     - Flutter
+  - Toast (4.0.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - smart_auth (from `.symlinks/plugins/smart_auth/ios`)
@@ -24,10 +29,13 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - PhoneNumberKit
+    - Toast
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   libphonenumber_plugin:
     :path: ".symlinks/plugins/libphonenumber_plugin/ios"
   shared_preferences_foundation:
@@ -37,10 +45,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  fluttertoast: fafc4fa4d01a6a9e4f772ecd190ffa525e9e2d9c
   libphonenumber_plugin: e8a7d64a6624a7c25f2c4ab0b7ead2a8e341e35e
   PhoneNumberKit: 43b5169526cc417398c8f13f77c97552c1c6ed76
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   smart_auth: 4bedbc118723912d0e45a07e8ab34039c19e04f2
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 

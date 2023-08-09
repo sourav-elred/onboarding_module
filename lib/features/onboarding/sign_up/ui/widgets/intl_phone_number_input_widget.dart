@@ -28,10 +28,10 @@ class IntlPhoneNumberInputWidget extends StatelessWidget {
       keyboardType:
           const TextInputType.numberWithOptions(signed: false, decimal: false),
       spaceBetweenSelectorAndTextField: 0.0,
-      selectorTextStyle: StyleConstants.textStyle1.copyWith(
+      selectorTextStyle: StyleConstants.textStyle2.copyWith(
         color: const Color(0xff313030),
       ),
-      textStyle: StyleConstants.textStyle1.copyWith(
+      textStyle: StyleConstants.textStyle2.copyWith(
         color: const Color(0xff313030),
       ),
       inputBorder: InputBorder.none,
@@ -53,7 +53,7 @@ class IntlPhoneNumberInputWidget extends StatelessWidget {
       inputDecoration: InputDecoration(
         border: InputBorder.none,
         contentPadding: const EdgeInsets.only(),
-        hintStyle: StyleConstants.textStyle1.copyWith(
+        hintStyle: StyleConstants.textStyle2.copyWith(
           color: const Color(0xff797979),
         ),
         hintText: '00000 00000',

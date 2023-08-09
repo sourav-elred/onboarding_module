@@ -10,14 +10,14 @@ class TermsAndPolicyText extends StatelessWidget {
       children: [
         Text(
           'By proceeding you agree to',
-          style: StyleConstants.textStyle1.copyWith(
+          style: StyleConstants.textStyle2.copyWith(
             color: const Color(0xFF5F5F5F),
             fontSize: 13,
           ),
         ),
         Text(
           'Terms of services and Privacy Policies',
-          style: StyleConstants.textStyle1.copyWith(
+          style: StyleConstants.textStyle2.copyWith(
             color: const Color(0xFF5F5F5F),
             fontSize: 13,
             decoration: TextDecoration.underline,

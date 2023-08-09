@@ -2,7 +2,7 @@
 //
 //     final userInfoModel = userInfoModelFromJson(jsonString);
 
-// import 'package:meta/meta.dart';
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 UserInfoModel userInfoModelFromJson(String str) =>
@@ -11,62 +11,122 @@ UserInfoModel userInfoModelFromJson(String str) =>
 String userInfoModelToJson(UserInfoModel data) => json.encode(data.toJson());
 
 class UserInfoModel {
-  final String userType;
-  final String firstname;
-  final String lastname;
-  final String email;
-  final String userName;
-  final bool? isEmailValid;
-  final bool? isUsernameValid;
+  final bool success;
+  final bool isAuth;
+  final String message;
+  final bool emailValidStatus;
+  final bool usernameValidStatus;
+  final List<Result> result;
 
   UserInfoModel({
-    required this.userType,
-    required this.firstname,
-    required this.lastname,
-    required this.email,
-    required this.userName,
-    this.isEmailValid,
-    this.isUsernameValid,
+    required this.success,
+    required this.isAuth,
+    required this.message,
+    this.emailValidStatus = true,
+    this.usernameValidStatus = true,
+    required this.result,
   });
 
   UserInfoModel copyWith({
-    String? userType,
-    String? firstname,
-    String? lastname,
-    String? email,
-    String? userName,
+    bool? success,
+    bool? isAuth,
+    String? message,
+    bool? emailValidStatus,
+    bool? usernameValidStatus,
+    List<Result>? result,
   }) =>
       UserInfoModel(
-        userType: userType ?? this.userType,
-        firstname: firstname ?? this.firstname,
-        lastname: lastname ?? this.lastname,
-        email: email ?? this.email,
-        userName: userName ?? this.userName,
+        success: success ?? this.success,
+        isAuth: isAuth ?? this.isAuth,
+        message: message ?? this.message,
+        emailValidStatus: emailValidStatus ?? this.emailValidStatus,
+        usernameValidStatus: usernameValidStatus ?? this.usernameValidStatus,
+        result: result ?? this.result,
       );
 
   factory UserInfoModel.fromJson(Map<String, dynamic> json) => UserInfoModel(
-        userType: json["userType"],
-        firstname: json["firstname"],
-        lastname: json["lastname"],
-        email: json["email"],
-        userName: json["userName"],
-        isEmailValid: json["emailValidStatus"],
-        isUsernameValid: json["usernameValidStatus"],
-      );
-
-  factory UserInfoModel.empty() => UserInfoModel(
-        userType: 'myself',
-        firstname: '',
-        lastname: '',
-        email: '',
-        userName: '',
+        success: json["success"],
+        isAuth: json["isAuth"],
+        message: json["message"],
+        emailValidStatus: json["emailValidStatus"],
+        usernameValidStatus: json["usernameValidStatus"],
+        result:
+            List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "userType": userType,
+        "success": success,
+        "isAuth": isAuth,
+        "message": message,
+        "result": List<dynamic>.from(result.map((x) => x.toJson())),
+      };
+}
+
+class Result {
+  final String uid;
+  final String phone;
+  final String email;
+  final String firstname;
+  final String lastname;
+  final String userName;
+  final String userType;
+
+  Result({
+    required this.uid,
+    required this.phone,
+    required this.email,
+    required this.firstname,
+    required this.lastname,
+    required this.userName,
+    this.userType = 'myself',
+  });
+
+  Result copyWith({
+    String? uid,
+    String? phone,
+    String? email,
+    String? firstname,
+    String? lastname,
+    String? userName,
+    String? userType,
+  }) =>
+      Result(
+        uid: uid ?? this.uid,
+        phone: phone ?? this.phone,
+        email: email ?? this.email,
+        firstname: firstname ?? this.firstname,
+        lastname: lastname ?? this.lastname,
+        userName: userName ?? this.userName,
+        userType: userType ?? this.userType,
+      );
+
+  factory Result.empty() => Result(
+        uid: '',
+        phone: '',
+        email: '',
+        firstname: '',
+        lastname: '',
+        userName: '',
+        userType: 'myself',
+      );
+
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
+        uid: json["uid"],
+        phone: json["phone"],
+        email: json["email"],
+        firstname: json["firstname"],
+        lastname: json["lastname"],
+        userName: json["userName"],
+        userType: json["userType"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        // "uid": uid,
+        // "phone": phone,
+        "email": email,
         "firstname": firstname,
         "lastname": lastname,
-        "email": email,
         "userName": userName,
+        "userType": userType,
       };
 }

@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:auth_module/features/onboarding/sign_up/constants/style_constants.dart';
+
 import '../../../../../core/ui/widgets/app_bar/api_loader_screen.dart';
 import '../../../../../core/ui/widgets/app_bar/app_bar_widget.dart';
 import '../widgets/custom_otp_field.dart';
@@ -26,8 +30,51 @@ class OTPScreen extends StatelessWidget {
   }
 }
 
-class OTPview extends StatelessWidget {
+class OTPview extends StatefulWidget {
   const OTPview({super.key});
+
+  @override
+  State<OTPview> createState() => _OTPviewState();
+}
+
+class _OTPviewState extends State<OTPview> {
+  late Timer _timer;
+  int _start = 60;
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  void restartTimer() {
+    _start = 60;
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,37 +96,22 @@ class OTPview extends StatelessWidget {
                 const SizedBox(height: 37),
                 const Text(
                   'Enter code sent to your number',
-                  style: TextStyle(
-                    color: Color(0xFF302F2F),
-                    fontSize: 34,
-                    fontFamily: 'Avenir Next LT Pro',
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: StyleConstants.textStyle1,
                 ),
                 const SizedBox(height: 14),
                 Row(
                   children: [
-                    const Opacity(
+                    Opacity(
                       opacity: 0.60,
                       child: Text(
                         'We have sent code to',
-                        style: TextStyle(
-                          color: Color(0xFF302F2F),
-                          fontSize: 14,
-                          fontFamily: 'Avenir Next LT Pro',
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: StyleConstants.textStyle1.copyWith(fontSize: 14),
                       ),
                     ),
                     const SizedBox(width: 3),
                     Text(
                       context.read<SignUpViewModel>().phoneNumber,
-                      style: const TextStyle(
-                        color: Color(0xFF302F2F),
-                        fontSize: 14,
-                        fontFamily: 'Avenir Next LT Pro',
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: StyleConstants.textStyle1.copyWith(fontSize: 14),
                     )
                   ],
                 ),
@@ -90,16 +122,51 @@ class OTPview extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Resend code',
-                  style: TextStyle(
-                    color: Color(0xFF5F5F5F),
-                    fontSize: 14,
-                    fontFamily: 'Avenir Next LT Pro',
-                    fontWeight: FontWeight.w500,
-                    decoration: TextDecoration.underline,
-                    height: 1.50,
-                  ),
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.,
+                  children: [
+                    if (_timer.isActive) ...[
+                      Text(
+                        '00:$_start',
+                        style: StyleConstants.textStyle1.copyWith(
+                          color: const Color(0xFFBE212A),
+                          fontSize: 14,
+                        ),
+                      )
+                    ] else ...[
+                      GestureDetector(
+                        onTap: () {
+                          context
+                              .read<SignUpViewModel>()
+                              .generateOTP(resentOTP: true)
+                              .then((value) => restartTimer());
+                        },
+                        child: Text(
+                          'Resend code',
+                          style: StyleConstants.textStyle1.copyWith(
+                            fontSize: 14,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
+                    const Spacer(),
+                    Consumer<SignUpViewModel>(
+                      builder: (context, viewModel, child) {
+                        if (viewModel.error != null) {
+                          return Text(
+                            viewModel.error!,
+                            style: StyleConstants.textStyle1.copyWith(
+                              color: const Color(0xFFE72D38),
+                              fontSize: 12,
+                            ),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 24),
               ],

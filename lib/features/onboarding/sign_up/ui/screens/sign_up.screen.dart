@@ -1,3 +1,5 @@
+import 'package:auth_module/features/onboarding/sign_up/constants/style_constants.dart';
+
 import '../../../../../core/ui/widgets/app_bar/api_loader_screen.dart';
 import '../../../../../core/ui/widgets/app_bar/app_bar_widget.dart';
 import '../../../../../core/ui/widgets/custom_red_button.dart';
@@ -49,25 +51,14 @@ class SignUpView extends StatelessWidget {
                 const SizedBox(height: 37),
                 const Text(
                   'Enter your personal mobile number',
-                  style: TextStyle(
-                    color: Color(0xFF302F2F),
-                    fontSize: 34,
-                    fontFamily: 'Avenir Next LT Pro',
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: StyleConstants.textStyle1,
                 ),
                 const SizedBox(height: 14),
-                const Opacity(
+                Opacity(
                   opacity: 0.60,
                   child: Text(
                     'We will send you a confirmation code',
-                    style: TextStyle(
-                      color: Color(0xFF302F2F),
-                      fontSize: 14,
-                      fontFamily: 'Avenir Next LT Pro',
-                      fontWeight: FontWeight.w500,
-                      height: 1.50,
-                    ),
+                    style: StyleConstants.textStyle1.copyWith(fontSize: 14),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -81,17 +72,11 @@ class SignUpView extends StatelessWidget {
                   },
                 ),
                 const Divider(color: Color(0xff797979)),
-                const SizedBox(
+                SizedBox(
                   width: 309,
                   child: Text(
                     'Personal number please',
-                    style: TextStyle(
-                      color: Color(0xFF5F5F5F),
-                      fontSize: 12,
-                      fontFamily: 'Avenir Next LT Pro',
-                      fontWeight: FontWeight.w500,
-                      height: 2.25,
-                    ),
+                    style: StyleConstants.textStyle1.copyWith(fontSize: 12),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -104,14 +89,12 @@ class SignUpView extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 40),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'Request OTP on your registered email',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFFE72D38),
+                    style: StyleConstants.textStyle1.copyWith(
+                      color: const Color(0xFFE72D38),
                       fontSize: 14,
-                      fontFamily: 'Avenir Next LT Pro',
-                      fontWeight: FontWeight.w500,
                       decoration: TextDecoration.underline,
                     ),
                   ),

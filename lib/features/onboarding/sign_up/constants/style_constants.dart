@@ -1,12 +1,16 @@
-import '../../basic_details/constants/assets_constants.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 class StyleConstants {
   static const textStyle1 = TextStyle(
+    color: Color(0xFF302F2F),
+    fontSize: 34,
+    fontFamily: 'AvenirNextLTPro',
+    fontWeight: FontWeight.w500,
+  );
+  static const textStyle2 = TextStyle(
     fontSize: 28,
     height: 35 / 28,
-    fontFamily: 'Avenir Next LT Pro',
+    fontFamily: 'AvenirNextLTPro',
     // letterSpacing: 1,
     fontWeight: FontWeight.w500,
   );

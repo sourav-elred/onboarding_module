@@ -25,7 +25,7 @@ class OtpFieldWidget extends StatelessWidget {
           ],
           androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
           defaultPinTheme: PinTheme(
-              textStyle: StyleConstants.textStyle1,
+              textStyle: StyleConstants.textStyle2,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -43,7 +43,7 @@ class OtpFieldWidget extends StatelessWidget {
             color: Colors.black,
           ),
           focusedPinTheme: PinTheme(
-            textStyle: StyleConstants.textStyle1,
+            textStyle: StyleConstants.textStyle2,
             width: 40,
             height: 40,
             decoration: BoxDecoration(
@@ -54,7 +54,7 @@ class OtpFieldWidget extends StatelessWidget {
             ),
           ),
           submittedPinTheme: PinTheme(
-            textStyle: StyleConstants.textStyle1,
+            textStyle: StyleConstants.textStyle2,
             width: 40,
             height: 40,
             decoration: BoxDecoration(
@@ -65,7 +65,7 @@ class OtpFieldWidget extends StatelessWidget {
             ),
           ),
           errorPinTheme: const PinTheme(
-            textStyle: StyleConstants.textStyle1,
+            textStyle: StyleConstants.textStyle2,
             width: 40,
             height: 40,
             decoration: BoxDecoration(

@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:fluttertoast/fluttertoast.dart';
+
 import '../../../../core/shared_preferences/shared_prefs_client.dart';
 import '../models/verify_otp_response_model.dart';
 import '../services/sign_up_service.dart';
@@ -11,6 +13,14 @@ class SignUpViewModel extends ChangeNotifier {
   final SignUpService _signUpService = SignUpService();
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  String? _error;
+  String? get error => _error;
+
+  void setError(String? error) {
+    _error = error;
+    notifyListeners();
+  }
 
   void setLoading(bool value) {
     _isLoading = value;
@@ -37,25 +47,28 @@ class SignUpViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void generateOTP() async {
+  Future<void> generateOTP({bool resentOTP = false}) async {
+    setError(null);
     setLoading(true);
 
     final result = await _signUpService.sendOtp(phoneNumber: _phoneNumber);
 
     result.fold((err) {
       setLoading(false);
-      notifyListeners();
     }, (response) {
       if (response.success) {
         _transactionID = response.result?.transactionId ?? '';
         setLoading(false);
         notifyListeners();
-        navigatorKey.currentState?.pushNamed(RouteConstansts.otpScreen);
+        if (!resentOTP) {
+          navigatorKey.currentState?.pushNamed(RouteConstansts.otpScreen);
+        }
       }
     });
   }
 
   void verifyOTP() async {
+    setError(null);
     setLoading(true);
 
     final result = await _signUpService.verifyOTP(
@@ -66,7 +79,8 @@ class SignUpViewModel extends ChangeNotifier {
     result.fold(
       (err) {
         setLoading(false);
-        notifyListeners();
+        // Fluttertoast.showToast(msg: err);
+        setError(err);
       },
       (otpReponse) async {
         if (otpReponse.success) {
@@ -97,11 +111,7 @@ class SignUpViewModel extends ChangeNotifier {
           .setAccessToken(response.response!.result.first.accessToken!);
       await SharedPrefsClient().setUserCode(response.response!.userCode!);
       setLoading(false);
-      notifyListeners();
-      navigatorKey.currentState?.pushNamedAndRemoveUntil(
-        RouteConstansts.basicDetails,
-        (route) => false,
-      );
+      navigatorKey.currentState?.pushNamed(RouteConstansts.basicDetails);
     }
   }
 }
