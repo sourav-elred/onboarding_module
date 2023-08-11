@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:auth_module/core/ui/widgets/widget_with_loader.dart';
+import 'package:auth_module/core/utlis/mixins/notifier_mixin.dart';
 import 'package:auth_module/features/onboarding/sign_up/constants/style_constants.dart';
 
 import '../../../../../core/ui/widgets/app_bar/api_loader_screen.dart';
@@ -15,18 +17,20 @@ class OTPScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const OTPview(),
-        Selector<SignUpViewModel, bool>(
-          builder: (_, isLoading, child) => Visibility(
-            visible: isLoading,
-            child: const ApiLoaderScreen(),
-          ),
-          selector: (_, model) => model.isLoading,
-        ),
-      ],
-    );
+    // return Stack(
+
+    //   children: [
+    //     const OTPview(),
+    //     Selector<SignUpViewModel, bool>(
+    //       builder: (_, isLoading, child) => Visibility(
+    //         visible: isLoading,
+    //         child: const ApiLoaderScreen(),
+    //       ),
+    //       selector: (_, model) => model.state == AppState.loading,
+    //     ),
+    //   ],
+    // );
+    return const WidgetWithLoader<SignUpViewModel>(child: OTPview());
   }
 }
 
@@ -153,9 +157,9 @@ class _OTPviewState extends State<OTPview> {
                     const Spacer(),
                     Consumer<SignUpViewModel>(
                       builder: (context, viewModel, child) {
-                        if (viewModel.error != null) {
+                        if (viewModel.failure != null) {
                           return Text(
-                            viewModel.error!,
+                            viewModel.failure!.message,
                             style: StyleConstants.textStyle1.copyWith(
                               color: const Color(0xFFE72D38),
                               fontSize: 12,

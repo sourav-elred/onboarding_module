@@ -1,3 +1,4 @@
+import 'package:auth_module/core/ui/widgets/widget_with_loader.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../../core/ui/widgets/app_bar/api_loader_screen.dart';
@@ -14,17 +15,20 @@ class BasicDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const BasicDetailView(),
-        Selector<BasicDetailViewModel, bool>(
-          builder: (_, isLoading, child) => Visibility(
-            visible: isLoading,
-            child: const ApiLoaderScreen(),
-          ),
-          selector: (_, model) => model.isLoading,
-        ),
-      ],
+    // return Stack(
+    //   children: [
+    //     const BasicDetailView(),
+    //     Selector<BasicDetailViewModel, bool>(
+    //       builder: (_, isLoading, child) => Visibility(
+    //         visible: isLoading,
+    //         child: const ApiLoaderScreen(),
+    //       ),
+    //       selector: (_, model) => model.isLoading,
+    //     ),
+    //   ],
+    // );
+    return const WidgetWithLoader<BasicDetailViewModel>(
+      child: BasicDetailView(),
     );
   }
 }

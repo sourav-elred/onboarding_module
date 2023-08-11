@@ -1,6 +1,7 @@
 import 'dart:developer';
 
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:auth_module/core/utlis/failure.dart';
+import 'package:auth_module/core/utlis/mixins/notifier_mixin.dart';
 
 import '../../../../core/shared_preferences/shared_prefs_client.dart';
 import '../models/verify_otp_response_model.dart';
@@ -9,23 +10,8 @@ import '../../../../main.dart';
 import '../../../../routes/routes_constants.dart';
 import 'package:flutter/material.dart';
 
-class SignUpViewModel extends ChangeNotifier {
+class SignUpViewModel extends ChangeNotifierState {
   final SignUpService _signUpService = SignUpService();
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-
-  String? _error;
-  String? get error => _error;
-
-  void setError(String? error) {
-    _error = error;
-    notifyListeners();
-  }
-
-  void setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
 
   String _phoneNumber = '';
   String get phoneNumber => _phoneNumber;
@@ -48,18 +34,16 @@ class SignUpViewModel extends ChangeNotifier {
   }
 
   Future<void> generateOTP({bool resentOTP = false}) async {
-    setError(null);
-    setLoading(true);
+    setState(AppState.loading);
 
     final result = await _signUpService.sendOtp(phoneNumber: _phoneNumber);
 
     result.fold((err) {
-      setLoading(false);
+      setState(AppState.error, Failure(err));
     }, (response) {
       if (response.success) {
         _transactionID = response.result?.transactionId ?? '';
-        setLoading(false);
-        notifyListeners();
+        setState(AppState.initial);
         if (!resentOTP) {
           navigatorKey.currentState?.pushNamed(RouteConstansts.otpScreen);
         }
@@ -68,8 +52,7 @@ class SignUpViewModel extends ChangeNotifier {
   }
 
   void verifyOTP() async {
-    setError(null);
-    setLoading(true);
+    setState(AppState.loading);
 
     final result = await _signUpService.verifyOTP(
       otp: _otp,
@@ -78,9 +61,7 @@ class SignUpViewModel extends ChangeNotifier {
 
     result.fold(
       (err) {
-        setLoading(false);
-        // Fluttertoast.showToast(msg: err);
-        setError(err);
+        setState(AppState.error, Failure(err));
       },
       (otpReponse) async {
         if (otpReponse.success) {
@@ -100,17 +81,13 @@ class SignUpViewModel extends ChangeNotifier {
     }
     if (response.response!.createdUser!) {
       navigatorKey.currentState!.push(MaterialPageRoute(
-        builder: (context) => const Scaffold(
-          body: Center(
-            child: Text('Sample Home Page'),
-          ),
-        ),
-      ));
+          builder: (context) =>
+              const Scaffold(body: Center(child: Text('Sample Home Page')))));
     } else {
       await SharedPrefsClient()
           .setAccessToken(response.response!.result.first.accessToken!);
       await SharedPrefsClient().setUserCode(response.response!.userCode!);
-      setLoading(false);
+      setState(AppState.initial);
       navigatorKey.currentState?.pushNamed(RouteConstansts.basicDetails);
     }
   }

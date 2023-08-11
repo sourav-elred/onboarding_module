@@ -1,23 +1,26 @@
 import 'dart:developer';
 
+import 'package:auth_module/core/utlis/failure.dart';
+import 'package:auth_module/core/utlis/mixins/notifier_mixin.dart';
+
 import '../models/user_info_model.dart';
 import '../services/basic_details_service.dart';
 import '../../../../main.dart';
 import 'package:flutter/material.dart';
 
-class BasicDetailViewModel extends ChangeNotifier {
+class BasicDetailViewModel extends ChangeNotifierState {
   final _basicDetailService = BasicDetailsService();
 
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
+  // bool _isLoading = false;
+  // bool get isLoading => _isLoading;
 
-  void setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
+  // void setLoading(bool value) {
+  //   _isLoading = value;
+  //   notifyListeners();
+  // }
 
-  String? _error;
-  String? get error => _error;
+  // String? _error;
+  // String? get error => _error;
 
   String? _emailError;
   String? get emailError => _emailError;
@@ -36,10 +39,10 @@ class BasicDetailViewModel extends ChangeNotifier {
   bool _isUsernameValid = false;
   bool get isUsernameValid => _isUsernameValid;
 
-  void setError(String? error) {
-    _error = error;
-    notifyListeners();
-  }
+  // void setError(String? error) {
+  //   _error = error;
+  //   notifyListeners();
+  // }
 
   Result userInfoModel = Result.empty();
 
@@ -88,34 +91,47 @@ class BasicDetailViewModel extends ChangeNotifier {
   }
 
   void submitUserData() async {
-    setError(null);
+    // setError(null);
+    setState(AppState.initial);
     setEmailError = null;
     setUsernameError = null;
 
     if (userInfoModel.firstname.length > 12) {
-      setError('First Name should not be greate than 12.');
+      // setError('First Name should not be greate than 12.');
+      setState(
+        AppState.error,
+        Failure('First Name should not be greate than 12.'),
+      );
       return;
     }
 
     if (!RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(userInfoModel.email)) {
-      setError('Email Id not valid');
+      // setError('Email Id not valid');
+      setState(
+        AppState.error,
+        Failure('Email Id not valid'),
+      );
       return;
     }
 
     debugPrint(userInfoModel.toJson().toString());
-    setLoading(true);
+    // setLoading(true);
+    setState(AppState.loading);
 
     final result = await _basicDetailService.storeBasicDetails(userInfoModel);
 
     result.fold((err) {
-      setLoading(false);
+      // setLoading(false);
+
       debugPrint(err);
       // Fluttertoast.showToast(msg: err);
-      setError(err);
+      // setError(err);
+      setState(AppState.error, Failure(err));
     }, (userInfo) {
-      setLoading(false);
+      // setLoading(false);
+      setState(AppState.initial);
       if (!userInfo.emailValidStatus) {
         setEmailError = 'email is already in use';
         notifyListeners();
